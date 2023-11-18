@@ -16,7 +16,7 @@ export default function Home() {
     <main className="relative flex min-h-screen flex-col items-center justify-center bg-transparent">
       <Navbar />
       <Map />
-      <ButtonCRUD/>
+      <ButtonCRUD />
     </main>
   );
 }

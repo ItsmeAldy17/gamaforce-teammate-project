@@ -24,7 +24,7 @@ const Map = () => {
         zoom={zoom_level}
         ref={mapRef}
         scrollWheelZoom={true}
-        className="w-screen 2xl:h-[864px] xl:h-[717.12px] lg:h-[578.88px] md:h-[432px] h-[360px]"
+        className="w-screen h-screen"
       >
         <TileLayer url={map_tiler.url} attribution={map_tiler.atr} />
       </MapContainer>

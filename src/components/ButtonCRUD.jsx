@@ -9,7 +9,7 @@ const ButtonCRUD = () => {
   return (
     <>
       {showPopUp && <PopUp />}
-      <Button className="fixed bottom-0 z-50 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold rounded-full" onClick={() => setShowPopUp((prev) => !prev)} >Plan Mission</Button>
+      <Button className="fixed bottom-[50px] z-[9999999] border-black border-4 border-solid bg-transparent text-black font-bold rounded-full p-4 text-3xl" onClick={() => setShowPopUp((prev) => !prev)} >Plan Mission</Button>
     </>
   );
 };

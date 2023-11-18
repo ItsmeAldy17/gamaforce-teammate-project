@@ -1,7 +1,7 @@
 import React from "react";
 
 const Navbar = () => {
-  return <Navbar className="fixed top-0 z-50 w-screen max-h-[97px]">Navbar</Navbar>;
+  return <nav className="fixed top-0 z-[9999999] w-screen max-h-[97px] flex flex-row bg-black ">Navbar</nav>;
 };
 
 export default Navbar;
