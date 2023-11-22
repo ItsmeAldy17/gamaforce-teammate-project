@@ -13,8 +13,8 @@ export async function POST(request) {
 // GET /api/mission
 export async function GET() {
   await connectMongoDB(); // make connection to MongoDB
-  const mission = await missionModel.find(); // get all missions
-  return NextResponse.json({ mission }, { status: 200 });
+  const missions = await missionModel.find(); // get all missions
+  return NextResponse.json({ missions }, { status: 200 });
 }
 
 // DELETE /api/mission
