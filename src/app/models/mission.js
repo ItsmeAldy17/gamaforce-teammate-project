@@ -25,7 +25,9 @@ const missionSchema = new Schema(
   }
 );
 
-// Buat model Mongoose dari skema
-const missionModel = mongoose.model("Mission", missionSchema);
+// Mongoose model untuk data GeoJson
+// mongoose.models._Mission --> Jika udah dibuat modelnya maka tidak perlu dibuat lagi
+const missionModel = mongoose.models._Mission || mongoose.model("_Mission", missionSchema); //
+
 
 module.exports = missionModel;
