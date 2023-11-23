@@ -1,5 +1,4 @@
 import Navbar from "@/components/Navbar";
-import ButtonCRUD from "@/components/ButtonCRUD";
 import dynamic from "next/dynamic";
 import React from "react";
 
@@ -19,7 +18,7 @@ export default function Home() {
     <main className="relative flex min-h-screen flex-col items-center justify-center bg-transparent">
       <Navbar />
       <Map />
-      <ButtonCRUD />
+     
     </main>
   );
 }

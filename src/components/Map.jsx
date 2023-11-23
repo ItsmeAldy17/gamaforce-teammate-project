@@ -15,6 +15,7 @@ import Link from "next/link";
 import { EditControl } from "react-leaflet-draw";
 import "leaflet-draw/dist/leaflet.draw.css"; // add icon draw
 import { set } from "mongoose";
+import ButtonCRUD from "@/components/ButtonCRUD";
 
 const Map = () => {
   const [geoJSONData, setGeoJSONData] = useState([]);
@@ -50,7 +51,7 @@ const Map = () => {
     const { layerType, layer } = e; // layerType: jenis layer (e.g., 'polygon', 'polyline', 'rectangle', 'circle')
     const { _leaflet_id } = layer; // _leaflet_id: id dari layer yang baru dibuat
     const newGeoJSON = layer.toGeoJSON(); // Mendapatkan data GeoJSON dari layer yang baru dibuat
-    newGeoJSON.properties = _leaflet_id; // Menambahkan id ke data GeoJSON
+    newGeoJSON.properties.id = _leaflet_id; // Menambahkan id ke data GeoJSON
     setGeoJSONData((prev) => [...prev, newGeoJSON]); // Menyimpan data GeoJSON di state 
 
   };
@@ -61,14 +62,14 @@ const Map = () => {
     const editedGeoJSONData = editedLayers.map((layer) => {
       const { _leaflet_id } = layer; // Mendapatkan id dari layer yang diedit
       const editedGeoJSON = layer.toGeoJSON(); // Mendapatkan data GeoJSON dari layer yang diedit
-      editedGeoJSON.properties = _leaflet_id; // Menambahkan id ke data GeoJSON
+      editedGeoJSON.properties.id = _leaflet_id; // Menambahkan id ke data GeoJSON
       return editedGeoJSON; // Mengembalikan data GeoJSON yang sudah diedit
     });
 
     setGeoJSONData((prev) =>
       prev.map((geoJSON) => {
         const edited = editedGeoJSONData.find(
-          (editedGeoJSON) => editedGeoJSON.properties === geoJSON.properties
+          (editedGeoJSON) => editedGeoJSON.properties.id === geoJSON.properties.id
         ); // Mencari data GeoJSON yang diedit
         return edited || geoJSON;
       })
@@ -85,7 +86,7 @@ const Map = () => {
 
     setGeoJSONData((prev) =>
       prev.filter(
-        (geoJSON) => !deletedGeoJSONData.includes(geoJSON.properties)
+        (geoJSON) => !deletedGeoJSONData.includes(geoJSON.properties.id)
       )
     );
   };
@@ -143,6 +144,7 @@ const Map = () => {
       <p className="absolute top-1/2 z-[9999999] text-center font-bold text-black">
         {JSON.stringify(geoJSONData)}
       </p>
+      <ButtonCRUD />
     </>
   );
 };
