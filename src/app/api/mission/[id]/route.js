@@ -7,11 +7,11 @@ export async function PUT(request, { params }) {
   const { id } = params;
   const {
     newType: type,
-    newGeometry: geometry,
     newProperties: properties,
+    newGeometry: geometry,
   } = await request.json();
   await connectMongoDB(); // make connection to MongoDB
-  await missionModel.findByIdAndUpdate(id, { type, geometry, properties }); // update mission by id
+  await missionModel.findByIdAndUpdate(id, { type, properties, geometry }); // update mission by id
   return NextResponse.json({ message: "Mission updated" }, { status: 200 });
 }
 

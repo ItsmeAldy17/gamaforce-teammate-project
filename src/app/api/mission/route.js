@@ -4,9 +4,9 @@ import missionModel from "@/app/models/mission.js";
 
 // POST /api/mission
 export async function POST(request) {
-  const { type, geometry, properties } = await request.json();
+  const { type, properties, geometry  } = await request.json();
   await connectMongoDB(); // make connection to MongoDB
-  await missionModel.create({ type, geometry, properties }); // create new mission
+  await missionModel.create({ type, properties, geometry }); // create new mission
   return NextResponse.json({ message: "Mission created" }, { status: 201 });
 }
 

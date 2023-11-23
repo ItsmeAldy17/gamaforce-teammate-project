@@ -19,7 +19,7 @@ const missionSchema = new Schema(
         type: String,
       },
       coordinates: {
-        type: [[Number]], // Nestaed array of [longitude, latitude]
+        type: Array,
       },
     },
   },
