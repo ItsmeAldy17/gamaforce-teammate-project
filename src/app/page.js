@@ -2,8 +2,8 @@ import Navbar from "@/components/Navbar";
 import ButtonCRUD from "@/components/ButtonCRUD";
 import dynamic from "next/dynamic";
 import React from "react";
-import Sidebar from "@/components/Sidebar";
-import Layout from "@/components/Layout";
+
+// import Layout from "@/components/Layout";
 
 const Map = dynamic(() => import("@/components/Map"), {
   loading: () => (
@@ -17,8 +17,8 @@ const Map = dynamic(() => import("@/components/Map"), {
 export default function Home() {
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center bg-transparent">
-      <Sidebar />
       <Navbar />
+      <Map />
       <ButtonCRUD />
     </main>
   );

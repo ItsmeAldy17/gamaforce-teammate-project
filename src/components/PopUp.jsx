@@ -23,7 +23,7 @@ const PopUp = ({ onClose }) => {
   };
 
   return (
-    <section className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-opacity-50 bg-gray-800 text-white">
+    <section className="fixed top-0 z-[9999999] left-0 w-screen h-screen flex items-center justify-center bg-opacity-50 bg-gray-800 text-white">
       <div className={`bg-white p-4 rounded-md text-black ${missionCreated ? 'hidden' : ''}`}>
         <h2 className="text-2xl font-bold mb-4">Create Mission</h2>
         <label className="block mb-2">Mission Name:</label>
@@ -52,7 +52,7 @@ const PopUp = ({ onClose }) => {
         <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-opacity-50 bg-green-500 text-white">
           <div className="bg-white p-4 rounded-md text-black">
             <h2 className="text-2xl font-bold mb-4">Mission Created!</h2>
-            <p>Your mission "{missionName}" has been successfully created.</p>
+            <p>Your mission &quot;{missionName}&quot; has been successfully created.</p>
             <button
               onClick={handleMissionCreatedClose}
               className="mt-4 bg-green-500 text-white px-4 py-2 rounded-md"

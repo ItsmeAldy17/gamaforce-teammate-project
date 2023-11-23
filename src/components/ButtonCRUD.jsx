@@ -14,7 +14,7 @@ const ButtonCRUD = () => {
     <>
       {showPopUp && <PopUp onClose={() => setShowPopUp(false)} />}
       <Button
-        className="fixed bottom-[50px] z-[9999999] border-white border-4 border-solid bg-transparent text-white font-bold rounded-full p-4 text-3xl"
+        className="fixed bottom-[50px] z-[9999999] border-[#233059] border-4 border-solid bg-transparent text-[#233059] font-bold rounded-full p-4 text-3xl"
         onClick={handleButtonClick}
       >
         Plan Mission
