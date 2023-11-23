@@ -1,10 +1,24 @@
 "use client";
 import React from "react";
 import { useState, useRef } from "react";
-import { MapContainer, TileLayer } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  FeatureGroup,
+  GeoJSON,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+import Link from "next/link";
+import { EditControl } from "react-leaflet-draw";
+import "leaflet-draw/dist/leaflet.draw.css"; // add icon draw
+import { set } from "mongoose";
 
 const Map = () => {
+  const [geoJSONData, setGeoJSONData] = useState([]);
+
   const mapRef = useRef();
   const [loc, setLoc] = useState({
     lat: -7.773796086515779,
@@ -17,6 +31,67 @@ const Map = () => {
     atr: '&copy; <a href="https://www.maptiler.com/">MapTiler</a> &copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
   };
 
+  const iconMarker = new L.Icon({
+    iconUrl: "./img/Logo_Gamaforce_Biru.png",
+    iconSize: [80, 80],
+    anchorSize: [80 / 2, 80], // it centered the icon
+    popupAnchor: [0, -80 / 2], // icon will be showed above the marker
+  });
+
+  // fix icon marker
+  delete L.Icon.Default.prototype._getIconUrl;
+  L.Icon.Default.mergeOptions({
+    iconRetinaUrl: "./img/marker-icon.png",
+    iconUrl: "./img/marker-icon.png",
+    shadowUrl: "./img/marker-icon.png", // shadow icon
+  });
+
+  const _created = (e) => {
+    const { layerType, layer } = e; // layerType: jenis layer (e.g., 'polygon', 'polyline', 'rectangle', 'circle')
+    const { _leaflet_id } = layer; // _leaflet_id: id dari layer yang baru dibuat
+    const newGeoJSON = layer.toGeoJSON(); // Mendapatkan data GeoJSON dari layer yang baru dibuat
+    newGeoJSON.properties = _leaflet_id; // Menambahkan id ke data GeoJSON
+    setGeoJSONData((prev) => [...prev, newGeoJSON]); // Menyimpan data GeoJSON di state 
+
+  };
+
+  const _edited = (e) => {
+    const { layers } = e;
+    const editedLayers = layers.getLayers(); // Mendapatkan semua layer yang diedit
+    const editedGeoJSONData = editedLayers.map((layer) => {
+      const { _leaflet_id } = layer; // Mendapatkan id dari layer yang diedit
+      const editedGeoJSON = layer.toGeoJSON(); // Mendapatkan data GeoJSON dari layer yang diedit
+      editedGeoJSON.properties = _leaflet_id; // Menambahkan id ke data GeoJSON
+      return editedGeoJSON; // Mengembalikan data GeoJSON yang sudah diedit
+    });
+
+    setGeoJSONData((prev) =>
+      prev.map((geoJSON) => {
+        const edited = editedGeoJSONData.find(
+          (editedGeoJSON) => editedGeoJSON.properties === geoJSON.properties
+        ); // Mencari data GeoJSON yang diedit
+        return edited || geoJSON;
+      })
+    );
+  };
+
+  const _deleted = (e) => {
+    const { layers } = e;
+    const deletedLayers = layers.getLayers(); // Mendapatkan semua layer yang dihapus
+    const deletedGeoJSONData = deletedLayers.map((layer) => { 
+      const { _leaflet_id } = layer; // Mendapatkan id dari layer yang dihapus
+      return _leaflet_id; // Mengembalikan id dari layer yang dihapus
+    });
+
+    setGeoJSONData((prev) =>
+      prev.filter(
+        (geoJSON) => !deletedGeoJSONData.includes(geoJSON.properties)
+      )
+    );
+  };
+  
+  
+
   return (
     <>
       <MapContainer
@@ -26,8 +101,48 @@ const Map = () => {
         scrollWheelZoom={true}
         className="w-screen h-screen"
       >
+        <FeatureGroup>
+          <EditControl
+            position="topleft"
+            onCreated={_created}
+            onEdited={_edited}
+            onDeleted={_deleted}
+          />
+        </FeatureGroup>
+
+        {/* Misalnya, menampilkan data GeoJSON yang disimpan di state */}
+        {/* {geoJSONData && (
+          <GeoJSON
+            data={geoJSONData}
+            style={() => ({
+              color: "blue",
+              weight: 2,
+              opacity: 0.5,
+            })}
+          />
+        )} */}
+
         <TileLayer url={map_tiler.url} attribution={map_tiler.atr} />
+
+        <Marker
+          position={[-7.773796086515779, 110.37834223730684]}
+          icon={iconMarker}
+        >
+          <Popup>
+            <Link
+              href="https://gamaforce.wg.ugm.ac.id/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {" "}
+              Gamaforce{" "}
+            </Link>
+          </Popup>
+        </Marker>
       </MapContainer>
+      <p className="absolute top-1/2 z-[9999999] text-center font-bold text-black">
+        {JSON.stringify(geoJSONData)}
+      </p>
     </>
   );
 };

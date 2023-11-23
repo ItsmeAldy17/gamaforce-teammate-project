@@ -1,6 +1,9 @@
 import Navbar from "@/components/Navbar";
 import ButtonCRUD from "@/components/ButtonCRUD";
 import dynamic from "next/dynamic";
+import React from "react";
+
+// import Layout from "@/components/Layout";
 
 const Map = dynamic(() => import("@/components/Map"), {
   loading: () => (

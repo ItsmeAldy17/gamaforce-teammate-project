@@ -1,17 +1,28 @@
 "use client";
-import { useState } from "react";
-import React from "react";
+import React, { useState } from "react";
 import PopUp from "./PopUp";
 import Button from "./Button";
 
 const ButtonCRUD = () => {
   const [showPopUp, setShowPopUp] = useState(false);
+
+  const handleButtonClick = () => {
+    setShowPopUp((prev) => !prev);
+  };
+
   return (
     <>
-      {showPopUp && <PopUp />}
-      <Button className="fixed bottom-[50px] z-[9999999] border-black border-4 border-solid bg-transparent text-black font-bold rounded-full p-4 text-3xl" onClick={() => setShowPopUp((prev) => !prev)} >Plan Mission</Button>
+      {showPopUp && <PopUp onClose={() => setShowPopUp(false)} />}
+      <Button
+        className="fixed bottom-[50px] z-[9999999] border-[#233059] border-4 border-solid bg-transparent text-[#233059] font-bold rounded-full p-4 text-3xl"
+        onClick={handleButtonClick}
+      >
+        Plan Mission
+      </Button>
     </>
   );
 };
 
 export default ButtonCRUD;
+
+
