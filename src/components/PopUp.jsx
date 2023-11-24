@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const PopUp = ({ onClose, geoJSON = "", MISSIONS = "" }) => {
   const geo = JSON.parse(JSON.stringify(MISSIONS)); // json di parse ke string lalu di parse lagi ke object biar bisa dimapping
@@ -6,6 +7,7 @@ const PopUp = ({ onClose, geoJSON = "", MISSIONS = "" }) => {
   const [missionName, setMissionName] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
+  const router = useRouter();
   // const geoJSONData = JSON.parse(JSON.stringify(geoJSON));
 
   // useEffect(() => {
@@ -20,6 +22,7 @@ const PopUp = ({ onClose, geoJSON = "", MISSIONS = "" }) => {
   //   }
   // };
 
+  // create mission
   const handleCreateMission = async () => {
     try {
       const res = await fetch("http://localhost:3000/api/mission", {
@@ -54,9 +57,22 @@ const PopUp = ({ onClose, geoJSON = "", MISSIONS = "" }) => {
     }
   };
 
-  const handleDeleteMission = (index) => {
-    const updatedMissions = missions.filter((_, i) => i !== index);
-    setMissions(updatedMissions);
+  // delete mission
+  const handleDeleteMission = async (id) => {
+    const confirmed = confirm("Are you sure?");
+
+    if (confirmed) {
+      try {
+        const res = await fetch(`http://localhost:3000/api/mission?id=${id}`, {
+          method: "DELETE",
+        });
+        if (res.ok) {
+          router.refresh();
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
   };
 
   const handleClose = () => {
@@ -67,8 +83,9 @@ const PopUp = ({ onClose, geoJSON = "", MISSIONS = "" }) => {
   };
 
   return (
-    <section className="fixed top-0 z-[9999999] left-0 w-screen h-screen flex items-center justify-center bg-opacity-50 bg-gray-800 text-white">
-      {/* <p>{JSON.stringify(MISSIONS)}</p> */} {/* ngetest nilai dari JSON MISSIONS yang diparse menjadi string */}
+    <section className="fixed top-0 z-[9999999] left-0 w-screen h-screen flex items-center justify-center bg-opacity-50 bg-gray-800 text-white space-x-5">
+      {/* <p>{JSON.stringify(MISSIONS)}</p> */}{" "}
+      {/* ngetest nilai dari JSON MISSIONS yang diparse menjadi string */}
       <form className="bg-white p-4 rounded-md text-black">
         <h2 className="text-2xl font-bold mb-4">
           {editMode ? "Edit Mission" : "Create Mission"}
@@ -125,7 +142,7 @@ const PopUp = ({ onClose, geoJSON = "", MISSIONS = "" }) => {
                 Edit
               </button>
               <button
-                onClick={() => handleDeleteMission(index)}
+                onClick={() => handleDeleteMission(mission._id)}
                 className="ml-2 bg-red-500 text-white px-2 py-1 rounded-md"
               >
                 Delete
