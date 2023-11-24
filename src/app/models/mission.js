@@ -3,25 +3,29 @@ import mongoose, { Schema } from "mongoose";
 // Skema Mongoose untuk data GeoJson
 const missionSchema = new Schema(
   {
-    type: {
-      type: String,
-    },
-    properties: {
-      id: {
-        type: Number,
+    geoJSON: [
+      {
+        type: {
+          type: String,
+        },
+        properties: {
+          id: {
+            type: Number,
+          },
+          mission_name: {
+            type: String,
+          },
+        },
+        geometry: {
+          type: {
+            type: String,
+          },
+          coordinates: {
+            type: Array,
+          },
+        },
       },
-      mission_name: {
-        type: String,
-      },
-    },
-    geometry: {
-      type: {
-        type: String,
-      },
-      coordinates: {
-        type: Array,
-      },
-    },
+    ],
   },
   {
     timestamps: true,
