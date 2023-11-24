@@ -24,36 +24,64 @@ const PopUp = ({ onClose, geoJSON = "", MISSIONS = "" }) => {
 
   // create mission
   const handleCreateMission = async () => {
-    try {
-      const res = await fetch("http://localhost:3000/api/mission", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name: missionName, geoJSONs: geoJSON }),
-      });
-      if (!res.ok) {
-        throw new Error("Failed to create mission");
+    if (missionName.trim() !== "") {
+      try {
+        const res = await fetch("http://localhost:3000/api/mission", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name: missionName, geoJSONs: geoJSON }),
+        });
+        if (!res.ok) {
+          throw new Error("Failed to create mission");
+        }
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err);
     }
   };
 
-  const handleEditMission = (index) => {
-    setMissionName(missions[index].name);
+  const handleEditMission = async (_id, index) => {
+    // mengambalikan nilai dari mission yang akan diedit ke field mission name
+    setMissionName(getAllMissions[index].name);
     setEditMode(true);
     setEditIndex(index);
+    // console.log(getAllMissions[index]._id); // ngecek id dari mission yang akan diedit
+    // get mission by id
+    // try {
+    //   const res = await fetch(`http://localhost:3000/api/mission/${_id}`, {
+    //     cache: "no-cache",
+    //   });
+    //   if (!res.ok) {
+    //     throw new Error("Failed to fetch mission");
+    //   }
+    //   // const data = await res.json();
+    //   // console.log(data);
+    // } catch (err) {
+    //   console.log(err);
+    // }
   };
 
-  const handleUpdateMission = () => {
+  const handleUpdateMission = async () => {
     if (missionName.trim() !== "" && editIndex !== null) {
-      const updatedMissions = [...missions];
-      updatedMissions[editIndex].name = missionName;
-      setMissions(updatedMissions);
-      setMissionName("");
-      setEditMode(false);
-      setEditIndex(null);
+      try {
+        const res = await fetch(
+          `http://localhost:3000/api/mission/${getAllMissions[editIndex]._id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ name: missionName, geoJSONs: geoJSON }),
+          }
+        );
+        if (!res.ok) {
+          throw new Error("Failed to update mission");
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -87,7 +115,7 @@ const PopUp = ({ onClose, geoJSON = "", MISSIONS = "" }) => {
       {/* <p>{JSON.stringify(MISSIONS)}</p> */}{" "}
       {/* ngetest nilai dari JSON MISSIONS yang diparse menjadi string */}
       <form className="bg-white p-4 rounded-md text-black">
-        <h2 className="text-2xl font-bold mb-4">
+        <h2 className="text-2xl font-bold mb-4 text-center">
           {editMode ? "Edit Mission" : "Create Mission"}
         </h2>
         <label className="block mb-2">Mission Name:</label>
@@ -106,6 +134,7 @@ const PopUp = ({ onClose, geoJSON = "", MISSIONS = "" }) => {
         <div className="flex justify-end">
           {editMode ? (
             <button
+              type="submit"
               onClick={handleUpdateMission}
               className="mr-2 bg-blue-500 text-white px-4 py-2 rounded-md"
             >
@@ -129,24 +158,26 @@ const PopUp = ({ onClose, geoJSON = "", MISSIONS = "" }) => {
         </div>
       </form>
       <div className="mt-4 bg-white p-4 rounded-md text-black">
-        <h2 className="text-2xl font-bold mb-4">Missions List</h2>
+        <h2 className="text-2xl font-bold mb-4 text-center">Missions List</h2>
         <ul>
           {/* Ngemapping array of object */}
           {getAllMissions.map((mission, index) => (
-            <li key={index} className="mb-2">
+            <li key={index} className="mb-2 flex flex-row justify-between">
               {mission.name}
-              <button
-                onClick={() => handleEditMission(index)}
-                className="ml-2 bg-yellow-500 text-white px-2 py-1 rounded-md"
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => handleDeleteMission(mission._id)}
-                className="ml-2 bg-red-500 text-white px-2 py-1 rounded-md"
-              >
-                Delete
-              </button>
+              <span>
+                <button
+                  onClick={() => handleEditMission(mission._id, index)}
+                  className="ml-2 bg-yellow-500 text-white px-2 py-1 rounded-md"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDeleteMission(mission._id)}
+                  className="ml-2 bg-red-500 text-white px-2 py-1 rounded-md"
+                >
+                  Delete
+                </button>
+              </span>
             </li>
           ))}
         </ul>

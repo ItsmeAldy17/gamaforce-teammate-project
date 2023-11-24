@@ -6,14 +6,30 @@ import missionModel from "@/app/models/mission.js";
 // req.params.id
 export async function PUT(request, { params }) {
   const { id } = params;
-  const {
-    newType: type,
-    newProperties: properties,
-    newGeometry: geometry,
-  } = await request.json();
-  await connectMongoDB(); // make connection to MongoDB
-  await missionModel.findByIdAndUpdate(id, { type, properties, geometry }); // update mission by id
-  return NextResponse.json({ message: "Mission updated" }, { status: 200 });
+  const mission = await request.json();
+
+  try {
+    await connectMongoDB(); // make connection to MongoDB
+    const updatedMission = await missionModel.findByIdAndUpdate(id, mission, {
+      new: true,
+    });
+    console.log(updatedMission);
+
+    if (!updatedMission) {
+      return NextResponse.json(
+        { message: "Mission not found" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({ message: "Mission updated" }, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    // return NextResponse.json(
+    //   { message: "Failed to update mission" },
+    //   { status: 500 }
+    // );
+  }
 }
 
 // GET /api/mission/[id]
