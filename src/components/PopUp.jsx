@@ -28,7 +28,7 @@ const PopUp = ({ onClose, geoJSON = "" }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(geoJSON)
+        body: JSON.stringify({ name: missionName, geoJSONs: geoJSON }),
       });
       if (!res.ok) {
         throw new Error("Failed to create mission");
