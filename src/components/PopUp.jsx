@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 
-const PopUp = ({ onClose, geoJSON = "" }) => {
-  const [missions, setMissions] = useState(
-    JSON.parse(localStorage.getItem("missions")) || []
-  );
+const PopUp = ({ onClose, geoJSON = "", MISSIONS = "" }) => {
+  const geo = JSON.parse(JSON.stringify(MISSIONS)); // json di parse ke string lalu di parse lagi ke object biar bisa dimapping
+  // const [missions, setMissions] = useState();
   const [missionName, setMissionName] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   // const geoJSONData = JSON.parse(JSON.stringify(geoJSON));
 
-  useEffect(() => {
-    localStorage.setItem("missions", JSON.stringify(missions));
-  }, [missions]);
+  // useEffect(() => {
+  //   localStorage.setItem("missions", JSON.stringify(missions));
+  // }, [missions]);
 
   // const handleCreateMission = () => {
   //   if (missionName.trim() !== "") {
@@ -69,6 +68,7 @@ const PopUp = ({ onClose, geoJSON = "" }) => {
 
   return (
     <section className="fixed top-0 z-[9999999] left-0 w-screen h-screen flex items-center justify-center bg-opacity-50 bg-gray-800 text-white">
+      {/* <p>{JSON.stringify(MISSIONS)}</p> */} {/* ngetest nilai dari JSON MISSIONS yang diparse menjadi string */}
       <form className="bg-white p-4 rounded-md text-black">
         <h2 className="text-2xl font-bold mb-4">
           {editMode ? "Edit Mission" : "Create Mission"}
@@ -114,7 +114,8 @@ const PopUp = ({ onClose, geoJSON = "" }) => {
       <div className="mt-4 bg-white p-4 rounded-md text-black">
         <h2 className="text-2xl font-bold mb-4">Missions List</h2>
         <ul>
-          {missions.map((mission, index) => (
+          {/* Ngemapping array of object */}
+          {geo.missions.map((mission, index) => (
             <li key={index} className="mb-2">
               {mission.name}
               <button

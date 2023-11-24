@@ -18,7 +18,8 @@ import { set } from "mongoose";
 import ButtonCRUD from "@/components/ButtonCRUD";
 
 const Map = ({ missions = "" }) => {
-  const { properties, geometry } = missions;
+  // missions itu isinya ada missons lagi didalamnya, hati2
+  // const { geoJSONs } = missions; 
   const [geoJSONData, setGeoJSONData] = useState([]);
 
   const mapRef = useRef();
@@ -113,7 +114,7 @@ const Map = ({ missions = "" }) => {
         {/* Misalnya, menampilkan data GeoJSON yang disimpan di state */}
         {/* {geoJSONData && (
           <GeoJSON
-            data={geoJSONData}
+            data={geoJSONs}
             style={() => ({
               color: "blue",
               weight: 2,
@@ -140,10 +141,11 @@ const Map = ({ missions = "" }) => {
           </Popup>
         </Marker>
       </MapContainer>
-      <p className="absolute top-1/2 z-[9999999] text-center font-bold text-black">
-        {JSON.stringify(geoJSONData)}
-      </p>
-      <ButtonCRUD geoJSON={geoJSONData} />
+      {/* melihat apakah nilai semua data dari database kepanggil apa tidak */}
+      {/* <p className="absolute top-1/2 z-[9999999] text-center font-bold text-black">
+        {JSON.stringify(missions)}
+      </p> */}
+      <ButtonCRUD missions={missions} geoJSON={geoJSONData} />
     </>
   );
 };
