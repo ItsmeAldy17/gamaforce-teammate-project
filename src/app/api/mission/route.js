@@ -18,10 +18,11 @@ export async function POST(request) {
 export async function GET() {
   await connectMongoDB(); // make connection to MongoDB
   const missions = await missionModel.find(); // get all missions
-  return NextResponse.json({ missions }, { status: 200 });
+  return NextResponse.json( missions , { status: 200 });
 }
 
 // DELETE /api/mission
+// req.query.id
 export async function DELETE(request) {
   const id = request.nextUrl.searchParams.get("id");
   await connectMongoDB(); // make connection to MongoDB

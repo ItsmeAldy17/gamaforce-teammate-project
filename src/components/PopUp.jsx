@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const PopUp = ({ onClose, geoJSON = "", MISSIONS = "" }) => {
-  const geo = JSON.parse(JSON.stringify(MISSIONS)); // json di parse ke string lalu di parse lagi ke object biar bisa dimapping
+  const getAllMissions = JSON.parse(JSON.stringify(MISSIONS)); // json di parse ke string lalu di parse lagi ke object biar bisa dimapping
   // const [missions, setMissions] = useState();
   const [missionName, setMissionName] = useState("");
   const [editMode, setEditMode] = useState(false);
@@ -132,7 +132,7 @@ const PopUp = ({ onClose, geoJSON = "", MISSIONS = "" }) => {
         <h2 className="text-2xl font-bold mb-4">Missions List</h2>
         <ul>
           {/* Ngemapping array of object */}
-          {geo.missions.map((mission, index) => (
+          {getAllMissions.map((mission, index) => (
             <li key={index} className="mb-2">
               {mission.name}
               <button

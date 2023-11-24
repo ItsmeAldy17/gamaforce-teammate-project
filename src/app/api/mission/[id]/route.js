@@ -3,6 +3,7 @@ import connectMongoDB from "@/app/config/mongodb.js";
 import missionModel from "@/app/models/mission.js";
 
 // PUT /api/mission/[id]
+// req.params.id
 export async function PUT(request, { params }) {
   const { id } = params;
   const {

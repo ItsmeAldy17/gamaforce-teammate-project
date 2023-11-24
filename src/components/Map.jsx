@@ -18,7 +18,7 @@ import { set } from "mongoose";
 import ButtonCRUD from "@/components/ButtonCRUD";
 
 const Map = ({ missions = "" }) => {
-  // missions itu isinya ada missons lagi didalamnya, hati2
+  // missions itu udah array of object
   // const { geoJSONs } = missions; 
   const [geoJSONData, setGeoJSONData] = useState([]);
 

@@ -28,7 +28,7 @@ const getMissions = async () => {
 };
 
 export default async function Home() {
-  const  missions  = await getMissions();
+  const  missions  = await getMissions(); // variabel missions bertipe array of object
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center bg-transparent">
       <Navbar />
