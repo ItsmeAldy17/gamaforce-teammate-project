@@ -1,21 +1,50 @@
 "use client";
-import React from "react";
-import { useState, useRef } from "react";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  FeatureGroup,
-  GeoJSON,
-} from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import L from "leaflet";
+import "leaflet/dist/leaflet.css"; // Import styles
+import leaflet from "leaflet";
+import React, { useState, useRef } from "react";
+import dynamic from "next/dynamic";
+import { Popup } from "react-leaflet";
 import Link from "next/link";
 import { EditControl } from "react-leaflet-draw";
 import "leaflet-draw/dist/leaflet.draw.css"; // add icon draw
-import { set } from "mongoose";
 import ButtonCRUD from "@/components/ButtonCRUD";
+
+const MapContainer = dynamic(
+  () => import("react-leaflet").then((mod) => mod.MapContainer),
+  {
+    ssr: false,
+  }
+);
+
+const TileLayer = dynamic(
+  () => import("react-leaflet").then((mod) => mod.TileLayer),
+  {
+    ssr: false,
+  }
+);
+
+const Marker = dynamic(
+  () => import("react-leaflet").then((mod) => mod.Marker),
+  {
+    ssr: false,
+  }
+);
+
+const FeatureGroup = dynamic(
+  () => import("react-leaflet").then((mod) => mod.FeatureGroup),
+  {
+    ssr: false,
+  }
+);
+
+const GeoJSON = dynamic(
+  () => import("react-leaflet").then((mod) => mod.GeoJSON),
+  {
+    ssr: false,
+  }
+);
+
+const { Icon } = leaflet;
 
 const Map = ({ missions = "" }) => {
   // missions itu udah array of object
@@ -34,11 +63,11 @@ const Map = ({ missions = "" }) => {
     atr: '&copy; <a href="https://www.maptiler.com/">MapTiler</a> &copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
   };
 
-  const iconMarker = new L.Icon({
+  const iconMarker = new Icon({
     iconUrl: "./img/Logo_Gamaforce_Biru.png",
     iconSize: [80, 80],
-    anchorSize: [80 / 2, 80], // it centered the icon
-    popupAnchor: [0, -80 / 2], // icon will be showed above the marker
+    iconAnchor: [40, 80], // Mengubah anchor agar sesuai dengan posisi marker
+    popupAnchor: [0, -80], // Icon akan muncul di atas marker
   });
 
   // fix icon marker
