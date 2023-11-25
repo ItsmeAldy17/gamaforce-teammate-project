@@ -40,6 +40,13 @@ const Navbar = ({ missions = "" }) => {
     });
   };
 
+  const handleKeyDown = (e) => {
+    // Menangani ketika tombol "Enter" ditekan
+    if (e.key === "Enter") {
+      handleSearchMission();
+    }
+  };
+
   return (
     <>
       <nav className="fixed top-0 z-[9999999] w-screen max-h-[80px] flex flex-row items-center justify-between bg-white p-1 pr-4 mb-16">
@@ -60,6 +67,7 @@ const Navbar = ({ missions = "" }) => {
               type="text"
               value={searchMission}
               onChange={(e) => setSearchMission(e.target.value)}
+              onKeyDown={handleKeyDown} // Menambahkan event handler untuk keydown
               placeholder="Search..."
               className="text-black px-4 py-2 rounded-md focus:outline-none"
               style={{ borderColor: borderColor, borderWidth: borderWidth }}
@@ -74,12 +82,15 @@ const Navbar = ({ missions = "" }) => {
           </div>
         ) : (
           <button
-            onClick={() => setLoadMission(false)}
-            className="ml-2 text-white px-4 py-2 rounded-md"
-            style={{ backgroundColor: backgroundColor }}
-          >
-            Go Back
-          </button>
+  onClick={() => {
+    setLoadMission(false);
+    setSearchMission(""); // Mengosongkan nilai pencarian
+  }}
+  className="ml-2 text-white px-4 py-2 rounded-md"
+  style={{ backgroundColor: backgroundColor }}
+>
+  Go Back
+</button>
         )}
       </nav>
 
