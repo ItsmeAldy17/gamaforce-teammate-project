@@ -1,14 +1,21 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import logo from "@/assets/logo-gamaforce.png";
 import Sidebar from "@/components/Sidebar";
 
-import { useState } from "react";
 import dynamic from "next/dynamic";
-import LoadMisi from "./LoadMisi";
 
 const Map = dynamic(() => import("@/components/Map"), {
+  loading: () => (
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-white"></div>
+    </div>
+  ),
+  ssr: false,
+});
+
+const LoadMisi = dynamic(() => import("@/components/LoadMisi"), {
   loading: () => (
     <div className="flex items-center justify-center min-h-screen">
       <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-white"></div>
@@ -44,7 +51,6 @@ const Navbar = ({ missions = "" }) => {
             width={250}
             onClick={() => setOpenSidebar((prev) => !prev)}
           />
-          {/* <span className="text-white ml-2 text-xl font-semibold">Gamaforce</span> */}
         </div>
 
         {/* Searchbar */}
@@ -72,7 +78,7 @@ const Navbar = ({ missions = "" }) => {
             className="ml-2 text-white px-4 py-2 rounded-md"
             style={{ backgroundColor: backgroundColor }}
           >
-           Go Back
+            Go Back
           </button>
         )}
       </nav>
