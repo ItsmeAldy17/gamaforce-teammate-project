@@ -1,0 +1,24 @@
+
+.leaflet-control-zoom.leaflet-bar{
+  position: absolute;
+  top: 450px;
+  left: 30px;
+  z-index: 1000;
+  background-color: #233059; 
+  color: white;
+  border: none; 
+  padding: 10px;
+  cursor: pointer;
+}
+
+
+.leaflet-draw.leaflet-control {
+  position: absolute;
+  top: 150px;
+  left: 28px;
+  z-index: 1000;
+  background-color: #233059; 
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}

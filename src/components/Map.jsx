@@ -1,5 +1,6 @@
 "use client";
 import "leaflet/dist/leaflet.css"; // Import styles
+import './styles/map.css'; // Import gaya kustom Anda
 import leaflet from "leaflet";
 import React, { useState, useRef } from "react";
 import dynamic from "next/dynamic";
