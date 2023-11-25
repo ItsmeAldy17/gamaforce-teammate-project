@@ -44,7 +44,7 @@ const Navbar = ({ missions = "" }) => {
     <>
       <nav className="fixed top-0 z-[9999999] w-screen max-h-[80px] flex flex-row items-center justify-between bg-white p-1 pr-4 mb-16">
         {/* Logo */}
-        <div className="flex items-center">
+        <div className="flex items-center cursor-pointer">
           <Image
             src={logo}
             alt="Logo"
