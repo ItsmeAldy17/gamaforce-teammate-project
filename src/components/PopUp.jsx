@@ -1,14 +1,39 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
+const DeleteConfirmationModal = ({ missionName, onConfirm, onCancel }) => {
+  return (
+    <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-opacity-50 bg-gray-800 text-white">
+      <div className="bg-white p-4 rounded-md text-black">
+        <p className="mb-4">Are you sure you want to delete the mission{" "} <strong>&quot;{missionName}&quot;</strong> ?</p>
+        <div className="flex justify-end">
+          <button
+            onClick={onConfirm}
+            className="mr-2 bg-red-500 text-white px-4 py-2 rounded-md"
+          >
+            Delete
+          </button>
+          <button
+            onClick={onCancel}
+            className="bg-gray-500 text-white px-4 py-2 rounded-md"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const PopUp = ({ onClose, geoJSON = "", MISSIONS = "" }) => {
-  const getAllMissions = JSON.parse(JSON.stringify(MISSIONS)); // json di parse ke string lalu di parse lagi ke object biar bisa dimapping
-  // const [missions, setMissions] = useState();
+  const [deleteConfirmation, setDeleteConfirmation] = useState(null);
+    // const [missions, setMissions] = useState();
+  const getAllMissions = JSON.parse(JSON.stringify(MISSIONS));
   const [missionName, setMissionName] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const router = useRouter();
-  // const geoJSONData = JSON.parse(JSON.stringify(geoJSON));
+// const geoJSONData = JSON.parse(JSON.stringify(geoJSON));
 
   // useEffect(() => {
   //   localStorage.setItem("missions", JSON.stringify(missions));
@@ -84,23 +109,28 @@ const PopUp = ({ onClose, geoJSON = "", MISSIONS = "" }) => {
       }
     }
   };
-
   // delete mission
-  const handleDeleteMission = async (id) => {
-    const confirmed = confirm("Are you sure?");
+  const handleDeleteMission = (id, name) => {
+    setDeleteConfirmation({ id, name });
+  };
 
-    if (confirmed) {
-      try {
-        const res = await fetch(`http://localhost:3000/api/mission?id=${id}`, {
-          method: "DELETE",
-        });
-        if (res.ok) {
-          router.refresh();
-        }
-      } catch (err) {
-        console.log(err);
+  const handleConfirmDelete = async () => {
+    const { id } = deleteConfirmation;
+    try {
+      const res = await fetch(`http://localhost:3000/api/mission?id=${id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        router.refresh();
+        setDeleteConfirmation(null);
       }
+    } catch (err) {
+      console.log(err);
     }
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteConfirmation(null);
   };
 
   const handleClose = () => {
@@ -160,7 +190,7 @@ const PopUp = ({ onClose, geoJSON = "", MISSIONS = "" }) => {
       <div className="mt-4 bg-white p-4 rounded-md text-black">
         <h2 className="text-2xl font-bold mb-4 text-center">Missions List</h2>
         <ul>
-          {/* Ngemapping array of object */}
+        {/* Ngemapping array of object */}
           {getAllMissions.map((mission, index) => (
             <li key={index} className="mb-2 flex flex-row justify-between">
               {mission && mission.name ? mission.name : "Unknown Mission"}
@@ -172,7 +202,9 @@ const PopUp = ({ onClose, geoJSON = "", MISSIONS = "" }) => {
                   Edit
                 </button>
                 <button
-                  onClick={() => handleDeleteMission(mission?._id)}
+                  onClick={() =>
+                    handleDeleteMission(mission?._id, mission?.name)
+                  }
                   className="ml-2 bg-red-500 text-white px-2 py-1 rounded-md"
                 >
                   Delete
@@ -182,6 +214,13 @@ const PopUp = ({ onClose, geoJSON = "", MISSIONS = "" }) => {
           ))}
         </ul>
       </div>
+      {deleteConfirmation !== null && (
+        <DeleteConfirmationModal
+          missionName={deleteConfirmation.name}
+          onConfirm={handleConfirmDelete}
+          onCancel={handleCancelDelete}
+        />
+      )}
     </section>
   );
 };
