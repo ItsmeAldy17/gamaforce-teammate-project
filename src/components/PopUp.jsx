@@ -163,16 +163,16 @@ const PopUp = ({ onClose, geoJSON = "", MISSIONS = "" }) => {
           {/* Ngemapping array of object */}
           {getAllMissions.map((mission, index) => (
             <li key={index} className="mb-2 flex flex-row justify-between">
-              {mission.name}
+              {mission && mission.name ? mission.name : "Unknown Mission"}
               <span>
                 <button
-                  onClick={() => handleEditMission(mission._id, index)}
+                  onClick={() => handleEditMission(mission?._id, index)}
                   className="ml-2 bg-yellow-500 text-white px-2 py-1 rounded-md"
                 >
                   Edit
                 </button>
                 <button
-                  onClick={() => handleDeleteMission(mission._id)}
+                  onClick={() => handleDeleteMission(mission?._id)}
                   className="ml-2 bg-red-500 text-white px-2 py-1 rounded-md"
                 >
                   Delete
