@@ -24,7 +24,7 @@ const LoadMisi = dynamic(() => import("@/components/LoadMisi"), {
   ssr: false,
 });
 
-const Navbar = ({ missions = "" }) => {
+const App = ({ missions = "" }) => {
   const [openSidebar, setOpenSidebar] = useState(false);
   const [loadMission, setLoadMission] = useState(false);
   const [searchMission, setSearchMission] = useState("");
@@ -49,6 +49,7 @@ const Navbar = ({ missions = "" }) => {
 
   return (
     <>
+      {/* Navbar */}
       <nav className="fixed top-0 z-[9999999] w-screen max-h-[80px] flex flex-row items-center justify-between bg-white p-1 pr-4 mb-16">
         {/* Logo */}
         <div className="flex items-center cursor-pointer">
@@ -56,6 +57,7 @@ const Navbar = ({ missions = "" }) => {
             src={logo}
             alt="Logo"
             width={250}
+            laoding="lazy"
             onClick={() => setOpenSidebar((prev) => !prev)}
           />
         </div>
@@ -82,17 +84,18 @@ const Navbar = ({ missions = "" }) => {
           </div>
         ) : (
           <button
-  onClick={() => {
-    setLoadMission(false);
-    setSearchMission(""); // Mengosongkan nilai pencarian
-  }}
-  className="ml-2 text-white px-4 py-2 rounded-md"
-  style={{ backgroundColor: backgroundColor }}
->
-  Go Back
-</button>
+            onClick={() => {
+              setLoadMission(false);
+              setSearchMission(""); // Mengosongkan nilai pencarian
+            }}
+            className="ml-2 text-white px-4 py-2 rounded-md"
+            style={{ backgroundColor: backgroundColor }}
+          >
+            Go Back
+          </button>
         )}
       </nav>
+      {/* End of Navbar */}
 
       <aside
         className={`bg-gray-800 text-white h-screen w-64 absolute top-[80px] z-[9999999] left-0 overflow-y-auto ${
@@ -114,4 +117,4 @@ const Navbar = ({ missions = "" }) => {
   );
 };
 
-export default Navbar;
+export default App;
